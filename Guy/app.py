@@ -93,7 +93,8 @@ class BotClient:
     @before_method(clear_terminal)
     def menu(self, status=None):
         newline = "\n" if not status else ""
-        print(f"--------------------------Menu---------------------------{newline}")
+        print(
+            f"--------------------------Menu---------------------------{newline}")
         if status:
             print("*********************************************************")
             print(status)
@@ -118,8 +119,16 @@ class BotClient:
         elif user_input == "4":
             self.export_tasks()
         elif user_input == "5":
-            print("Bye bye :)")
-            quit()
+            print("""*********************************************************
+All work will be lost unless you have exported to .csv
+*********************************************************""")
+            print("[Y] to confirm   [any] to cancel")
+            confirm_input = input("Enter your selection: ").lower()
+            if confirm_input == "y":
+                print("Bye Bye :)")
+                quit()
+            else:
+                self.menu("Exit aborted")
         else:
             self.menu("Error command not recognized")
 
@@ -152,6 +161,8 @@ class BotClient:
             print(status)
             print("*********************************************************")
             self.print_line()
+        if len(self._data) == 0:
+            self.menu("Error, no tasks created yet")
         task_data = [
             [
                 task.id,
@@ -183,7 +194,8 @@ class BotClient:
     @before_method(clear_terminal)
     def edit(self, status=None):
         task = self.active_task
-        print(f"----------------------Edit Task #{task.id}  -----------------------\n")
+        print(
+            f"----------------------Edit Task #{task.id}  -----------------------\n")
         if status:
             print("*********************************************************")
             print(status)
@@ -197,7 +209,7 @@ class BotClient:
 
         def handle_edit_actions():
             print(
-                "\n[T] edit title [D] edit desc [P] edit priority [C] complete\n[M] to menu [V] to view"
+                "[T] edit title [D] edit desc [P] edit priority [C] complete\n[M] to menu [V] to view [X] to delete"
             )
             action = input("Enter selection: ").lower()
             if action == "t":
@@ -213,8 +225,13 @@ class BotClient:
                 task.modify_field("weight", weight)
                 self.edit("Priority updated")
             elif action == "c":
-                task.complete()
-                self.edit("Task completed")
+                print("Task cannot be uncompleted")
+                confirm = input("[Y] to confirm [Any] to cancel: ").lower()
+                if confirm == "y":
+                    task.complete()
+                    self.edit("Task Complete")
+                else:
+                    handle_edit_actions()
             elif action == "m":
                 print("All changes will be lost")
                 confirm = input("[Y] to confirm [Any] to cancel: ").lower()
@@ -245,6 +262,10 @@ class BotClient:
             "To import a CSV file, make sure it follows the structure\nprovided by the export service."
         )
         self.print_line()
+        print("[C] to continue    [M] to menu")
+        action = input("Enter your selection: ").lower()
+        if action == "m":
+            self.menu("Import aborted")
         path = input("Enter the relative path of the file to be imported: ")
         try:
             with open(path, newline="") as f:
