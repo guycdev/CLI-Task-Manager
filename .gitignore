@@ -3,3 +3,4 @@ Lib
 Include
 venv
 pyvenv.cfg
+.venv
