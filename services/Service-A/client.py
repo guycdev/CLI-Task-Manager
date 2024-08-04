@@ -14,9 +14,7 @@ print("Connecting to hello world server…")
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
-#  Do 10 requests, waiting each time for a response
-for request in range(1):
-    print(f"Sending request {request} …")
+if __name__ == "__main__":
     coordinates = {"lat": "44.34", "lon": "10.9"}
     coords_str = str(coordinates)
     socket.send_string(coords_str)
