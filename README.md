@@ -68,8 +68,11 @@ while True:
 
     #  Send reply back to client
     socket.send_json(json.dumps(body))
-
 ```
+
+### UML Chart
+
+![service a UML](https://res.cloudinary.com/dojpkldcg/image/upload/v1722810841/Screenshot_2024-08-04_at_6.31.41_PM_etpjbc.png)
 
 ## Resources
 
