@@ -23,5 +23,7 @@ for request in range(1):
 
     #  Get the reply.
     message = socket.recv_json()
-    deserialized_message = json.loads(message)
-    print(f"Received json reply {deserialized_message}")
+
+    # Decode json
+    decoded_message = json.loads(message)
+    print(f"Received json reply {decoded_message}")

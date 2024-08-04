@@ -4,3 +4,4 @@ Include
 venv
 pyvenv.cfg
 .venv
+.env
